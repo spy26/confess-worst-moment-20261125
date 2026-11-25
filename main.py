@@ -16,6 +16,9 @@ def main() -> None:
     if not CONFESSION or len(CONFESSION) > 200:
         print("error: entry confession must be non-empty and at most 200 characters", file=sys.stderr)
         sys.exit(1)
+    if any(ord(ch) < 32 or ord(ch) == 127 for ch in CONFESSION):
+        print("error: entry confession must be exactly one clean line (no newline or control characters)", file=sys.stderr)
+        sys.exit(1)
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
